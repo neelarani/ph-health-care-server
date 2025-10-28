@@ -8,6 +8,28 @@ CREATE TYPE "UserStatus" AS ENUM ('ACTIVE', 'INACTIVE', 'DELETED');
 CREATE TYPE "Gender" AS ENUM ('MALE', 'FEMALE');
 
 -- CreateTable
+CREATE TABLE "Schedule" (
+    "id" TEXT NOT NULL,
+    "startDateTime" TIMESTAMP(3) NOT NULL,
+    "endDateTime" TIMESTAMP(3) NOT NULL,
+    "createdAt" TIMESTAMP(3) NOT NULL,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "Schedule_pkey" PRIMARY KEY ("id")
+);
+
+-- CreateTable
+CREATE TABLE "doctor_schedules" (
+    "doctorId" TEXT NOT NULL,
+    "scheduleId" TEXT NOT NULL,
+    "isBooked" BOOLEAN NOT NULL DEFAULT false,
+    "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    "updatedAt" TIMESTAMP(3) NOT NULL,
+
+    CONSTRAINT "doctor_schedules_pkey" PRIMARY KEY ("doctorId","scheduleId")
+);
+
+-- CreateTable
 CREATE TABLE "users" (
     "id" TEXT NOT NULL,
     "email" TEXT NOT NULL,
@@ -49,7 +71,7 @@ CREATE TABLE "doctors" (
     "appointmentFee" INTEGER NOT NULL,
     "qualification" TEXT NOT NULL,
     "currentWorkingPlace" TEXT NOT NULL,
-    "designation" TEXT NOT NULL,
+    "designation" TEXT,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -63,7 +85,7 @@ CREATE TABLE "patients" (
     "email" TEXT NOT NULL,
     "name" TEXT NOT NULL,
     "profilePhoto" TEXT,
-    "address" TEXT NOT NULL,
+    "address" TEXT,
     "isDeleted" BOOLEAN NOT NULL DEFAULT false,
     "createdAt" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
     "updatedAt" TIMESTAMP(3) NOT NULL,
@@ -82,6 +104,12 @@ CREATE UNIQUE INDEX "doctors_email_key" ON "doctors"("email");
 
 -- CreateIndex
 CREATE UNIQUE INDEX "patients_email_key" ON "patients"("email");
+
+-- AddForeignKey
+ALTER TABLE "doctor_schedules" ADD CONSTRAINT "doctor_schedules_doctorId_fkey" FOREIGN KEY ("doctorId") REFERENCES "doctors"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
+
+-- AddForeignKey
+ALTER TABLE "doctor_schedules" ADD CONSTRAINT "doctor_schedules_scheduleId_fkey" FOREIGN KEY ("scheduleId") REFERENCES "Schedule"("id") ON DELETE RESTRICT ON UPDATE CASCADE;
 
 -- AddForeignKey
 ALTER TABLE "admins" ADD CONSTRAINT "admins_email_fkey" FOREIGN KEY ("email") REFERENCES "users"("email") ON DELETE RESTRICT ON UPDATE CASCADE;

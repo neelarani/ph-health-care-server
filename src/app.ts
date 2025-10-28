@@ -3,11 +3,17 @@ import cors from 'cors';
 import globalErrorHandler from './app/middlewares/globalErrorHandler';
 import notFound from './app/middlewares/notFound';
 import config from './config/env';
-import { uptime } from 'process';
-import { timeStamp } from 'console';
 import router from './app/routes';
 
+import * as paymentController from './app/modules/payment/payment.controller';
+
 const app: Application = express();
+
+app.post(
+  '/webhook',
+  express.raw({ type: 'application/json' }),
+  paymentController.handleStripeWebhookEvent
+);
 app.use(
   cors({
     origin: 'http://localhost:3000',

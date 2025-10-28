@@ -1,10 +1,10 @@
+import ApiError from '@/app/errors/ApiError';
 import { token } from '@/app/helper';
 import { prisma } from '@/app/shared';
 import env from '@/config/env';
 import { UserStatus } from '@prisma/client';
 import bcrypt from 'bcryptjs';
-import jwt from 'jsonwebtoken';
-import { email } from 'zod';
+import httpStatus from 'http-status';
 
 export const login = async (payload: { email: string; password: string }) => {
   const user = await prisma.user.findUniqueOrThrow({
@@ -19,7 +19,7 @@ export const login = async (payload: { email: string; password: string }) => {
   );
 
   if (!isCorrectPassword) {
-    throw new Error('Password is incorrect!');
+    throw new ApiError(httpStatus.BAD_REQUEST, 'Password is incorrect!');
   }
 
   const accessToken = token.generateToken(

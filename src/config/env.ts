@@ -13,4 +13,8 @@ export default {
   cloudinary_api_key: process.env.CLOUDINARY_API_KEY,
   jwt_access_token: process.env.JWT_ACCESS_TOKEN,
   jwt_refresh_token: process.env.JWT_REFRESH_TOKEN,
+  openRouterApiKey: process.env.OPEN_ROUTER_API_KEY,
+  stripe_secret_key: process.env.STRIPE_SECRET_KEY,
+  client_url: process.env.CLIENT_URL,
+  web_hook_secret: process.env.WEB_HOOK_SECRET,
 };

@@ -2,7 +2,7 @@ import { NextFunction, Request, Response, Router } from 'express';
 import * as controller from './user.controller';
 import { fileUploder } from '@/app/helper';
 import * as validation from '@/app/modules/user/user.validation';
-import { auth, validateRequest } from '@/app/middlewares';
+import { auth } from '@/app/middlewares';
 import { UserRole } from '@prisma/client';
 
 const router = Router();
